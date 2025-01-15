@@ -1,4 +1,5 @@
-from logic.user_logic import UserLogic
+import re
+from datetime import datetime
 
 class UserFacade:
     def __init__(self):
@@ -10,20 +11,55 @@ class UserFacade:
             print(user)
 
     def register_user(self):
+        # Validate first name and last name
         first_name = input("Enter first name: ")
-        last_name = input("Enter last name: ")
-        email = input("Enter email: ")
-        password = input("Enter password: ")
-        d_o_b = input("Enter date of birth (YYYY-MM-DD): ")
-        role_id = int(input("Enter role ID (1 for admin, 2 for user): "))
+        if not first_name.isalpha():
+            print("Invalid first name. Please enter only letters.")
+            return
 
+        last_name = input("Enter last name: ")
+        if not last_name.isalpha():
+            print("Invalid last name. Please enter only letters.")
+            return
+
+        # Validate email format using regex
+        email = input("Enter email: ")
+        if not self.is_valid_email(email):
+            print("Invalid email format.")
+            return
+
+        password = input("Enter password: ")
+        if len(password) < 6:
+            print("Password must be at least 6 characters long.")
+            return
+
+        # Validate date of birth format
+        d_o_b = input("Enter date of birth (YYYY-MM-DD): ")
+        if not self.is_valid_date(d_o_b):
+            print("Invalid date format. Please use YYYY-MM-DD.")
+            return
+
+        # Validate role ID
+        try:
+            role_id = int(input("Enter role ID (1 for admin, 2 for user): "))
+            if role_id not in [1, 2]:
+                print("Invalid role ID. Choose 1 for admin or 2 for user.")
+                return
+        except ValueError:
+            print("Role ID must be an integer.")
+            return
+
+        # If all validations pass, add the user
         self.logic.add_user(first_name, last_name, email, password, d_o_b, role_id)
         print("User registered successfully!")
 
     def delete_user(self):
-        user_id = int(input("Enter user ID to delete: "))
-        self.logic.delete_user(user_id)
-        print("User deleted successfully!")
+        try:
+            user_id = int(input("Enter user ID to delete: "))
+            self.logic.delete_user(user_id)
+            print("User deleted successfully!")
+        except ValueError:
+            print("Invalid user ID. Please enter an integer.")
 
     def login_user(self):
         email = input("Enter your email: ")
@@ -36,3 +72,16 @@ class UserFacade:
         else:
             print("Invalid email or password!")
             return None  # Return None or handle invalid login attempt
+
+    def is_valid_email(self, email):
+        # Simple email validation regex
+        pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        return re.match(pattern, email) is not None
+
+    def is_valid_date(self, date_str):
+        # Validate date format (YYYY-MM-DD)
+        try:
+            datetime.strptime(date_str, '%Y-%m-%d')
+            return True
+        except ValueError:
+            return False

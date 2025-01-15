@@ -1,7 +1,6 @@
 from logic.vacation_logic import VacationLogic
 
 
-
 class VacationFacade:
     def __init__(self):
         self.logic = VacationLogic()
