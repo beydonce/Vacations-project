@@ -1,9 +1,8 @@
 import sys
 import os
 
-# הוספת התיקייה הראשית של הפרויקט לנתיב החיפוש
+# הוספת נתיב הפרויקט
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
-
 
 from facade.user_facade import UserFacade
 from facade.countries_facade import CountryFacade
@@ -12,17 +11,46 @@ from facade.likes_facade import LikesFacade
 from facade.roles_facade import RolesFacade
 
 
-def main():
-    while True:
-        print("\n=== Vacation Management System ===")
-        print("1. Manage Users")
-        print("2. Manage Countries")
-        print("3. Manage Vacations")
-        print("4. Manage Likes")
-        print("5. Manage Roles")
-        print("0. Exit")
 
-        choice = input("Choose an option: ")
+def show_welcome_screen():
+    print("\n" + "=" * 60)
+    print("""
+    ██╗   ██╗ █████╗  ██████╗██╗ █████╗ ████████╗ █████╗  ██████╗ ███╗   ██╗
+    ██║   ██║██╔══██╗██╔════╝██║██╔══██╗╚══██╔══╝██╔══██╗██╔═══██╗████╗  ██║
+    ██║   ██║███████║██║     ██║███████║   ██║   ███████║██║   ██║██╔██╗ ██║
+    ╚██╗ ██╔╝██╔══██║██║     ██║██╔══██║   ██║   ██╔══██║██║   ██║██║╚██╗██║
+     ╚████╔╝ ██║  ██║╚██████╗██║██║  ██║   ██║   ██║  ██║╚██████╔╝██║ ╚████║
+      ╚═══╝  ╚═╝  ╚═╝ ╚═════╝╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+    """)
+    print("=" * 60)
+    print("""
+    🌴 Welcome to the Vacation Management System 🌴
+    
+    Here you can:
+    - Manage Users 👥
+    - Manage Vacations 🏖️
+    - Manage Likes ❤️
+    - Manage Roles 👔
+    - Manage Countries 🌍
+    
+    Let's get started!
+    """)
+    print("=" * 60)
+
+
+def main():
+    show_welcome_screen()
+
+    while True:
+        print("\n=== Main Menu ===")
+        print("1. Manage Users 👥")
+        print("2. Manage Countries 🌍")
+        print("3. Manage Vacations 🏖️")
+        print("4. Manage Likes ❤️")
+        print("5. Manage Roles 👔")
+        print("0. Exit 🚪")
+
+        choice = input("\nChoose an option: ")
 
         if choice == "1":
             manage_users()
@@ -35,19 +63,20 @@ def main():
         elif choice == "5":
             manage_roles()
         elif choice == "0":
-            print("Exiting the system. Goodbye!")
+            print("\nThank you for using Vacation Management System! Goodbye! 👋")
             break
         else:
-            print("Invalid choice. Please try again.")
+            print("\nInvalid choice. Please try again! 🚫")
+
 
 def manage_users():
     user_facade = UserFacade()
     while True:
         print("\n--- Manage Users ---")
-        print("1. View All Users")
-        print("2. Register New User")
-        print("3. Delete User")
-        print("0. Back to Main Menu")
+        print("1. View All Users 👀")
+        print("2. Register New User ✍️")
+        print("3. Delete User ❌")
+        print("0. Back to Main Menu 🔙")
 
         choice = input("Choose an option: ")
 
@@ -62,13 +91,14 @@ def manage_users():
         else:
             print("Invalid choice. Please try again.")
 
+
 def manage_countries():
     country_facade = CountryFacade()
     while True:
         print("\n--- Manage Countries ---")
-        print("1. View All Countries")
-        print("2. Add New Country")
-        print("0. Back to Main Menu")
+        print("1. View All Countries 🌍")
+        print("2. Add New Country ➕")
+        print("0. Back to Main Menu 🔙")
 
         choice = input("Choose an option: ")
 
@@ -81,13 +111,14 @@ def manage_countries():
         else:
             print("Invalid choice. Please try again.")
 
+
 def manage_vacations():
     vacation_facade = VacationFacade()
     while True:
         print("\n--- Manage Vacations ---")
-        print("1. View All Vacations")
-        print("2. Add New Vacation")
-        print("0. Back to Main Menu")
+        print("1. View All Vacations 🏖️")
+        print("2. Add New Vacation ➕")
+        print("0. Back to Main Menu 🔙")
 
         choice = input("Choose an option: ")
 
@@ -100,14 +131,15 @@ def manage_vacations():
         else:
             print("Invalid choice. Please try again.")
 
+
 def manage_likes():
     likes_facade = LikesFacade()
     while True:
         print("\n--- Manage Likes ---")
-        print("1. View All Likes")
-        print("2. Add Like")
-        print("3. Remove Like")
-        print("0. Back to Main Menu")
+        print("1. View All Likes ❤️")
+        print("2. Add Like ➕")
+        print("3. Remove Like ❌")
+        print("0. Back to Main Menu 🔙")
 
         choice = input("Choose an option: ")
 
@@ -122,13 +154,14 @@ def manage_likes():
         else:
             print("Invalid choice. Please try again.")
 
+
 def manage_roles():
     roles_facade = RolesFacade()
     while True:
         print("\n--- Manage Roles ---")
-        print("1. View All Roles")
-        print("2. Add New Role")
-        print("0. Back to Main Menu")
+        print("1. View All Roles 👔")
+        print("2. Add New Role ➕")
+        print("0. Back to Main Menu 🔙")
 
         choice = input("Choose an option: ")
 
@@ -140,6 +173,7 @@ def manage_roles():
             break
         else:
             print("Invalid choice. Please try again.")
+
 
 if __name__ == "__main__":
     main()
