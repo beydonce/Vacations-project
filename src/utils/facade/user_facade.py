@@ -1,6 +1,5 @@
 from logic.user_logic import UserLogic
 
-
 class UserFacade:
     def __init__(self):
         self.logic = UserLogic()
@@ -25,3 +24,15 @@ class UserFacade:
         user_id = int(input("Enter user ID to delete: "))
         self.logic.delete_user(user_id)
         print("User deleted successfully!")
+
+    def login_user(self):
+        email = input("Enter your email: ")
+        password = input("Enter your password: ")
+
+        user = self.logic.get_user_by_email(email)
+        if user and user.password == password:
+            print("Login successful!")
+            return user  # Return the user object or relevant info after successful login
+        else:
+            print("Invalid email or password!")
+            return None  # Return None or handle invalid login attempt
