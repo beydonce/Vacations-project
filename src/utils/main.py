@@ -1,7 +1,8 @@
 import sys
 import os
+from dal import DAL
 
-# הוספת נתיב הפרויקט
+# Add project path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
 
 from facade.user_facade import UserFacade
@@ -11,10 +12,9 @@ from facade.likes_facade import LikesFacade
 from facade.roles_facade import RolesFacade
 
 
-
 def show_welcome_screen():
     print("\n" + "=" * 60)
-    print("""
+    print("""  
     ██╗   ██╗ █████╗  ██████╗██╗ █████╗ ████████╗ █████╗  ██████╗ ███╗   ██╗
     ██║   ██║██╔══██╗██╔════╝██║██╔══██╗╚══██╔══╝██╔══██╗██╔═══██╗████╗  ██║
     ██║   ██║███████║██║     ██║███████║   ██║   ███████║██║   ██║██╔██╗ ██║
@@ -25,154 +25,114 @@ def show_welcome_screen():
     print("=" * 60)
     print("""
     🌴 Welcome to the Vacation Management System 🌴
-    
-    Here you can:
-    - Manage Users 👥
-    - Manage Vacations 🏖️
-    - Manage Likes ❤️
-    - Manage Roles 👔
-    - Manage Countries 🌍
-    
-    Let's get started!
+
+    Let's log in or sign up to get started!
     """)
     print("=" * 60)
 
 
-def main():
-    show_welcome_screen()
+def login_or_signup():
+    while True:
+        print("=== Authentication ===")
+        print("1. Log In")
+        print("2. Sign Up")
+        print("0. Exit")
+        choice = input("Choose an option: ")
 
+        if choice == '1':
+            username = input("Enter your username: ")
+            password = input("Enter your password: ")
+            user, role = log_in(username, password)  # Pass both username and password
+            return role  # Return the user role (admin or user)
+        elif choice == '2':
+            user_facade = UserFacade()
+            user_facade.register_user()
+        elif choice == '0':
+            print("Goodbye!")
+            exit()
+        else:
+            print("Invalid choice. Please try again.")
+
+
+def log_in(username, password):
+    user_facade = UserFacade()
+    user = user_facade.login(username, password)  # Correct method call
+
+    if user:
+        # Assuming the role is stored in the user object as 'role_id'
+        role = user['role_id']  # Fetch role_id from the user data
+        if role == 1:  # If the user is an admin
+            return user, "admin"
+        elif role == 2:  # If the user is a regular user
+            return user, "user"
+        else:
+            return user, "user"  # Default role if role_id is unrecognized
+    else:
+        print("Invalid login credentials.")
+        return None, None  # Return None for both user and role
+
+
+def sign_up():
+    print("\n--- Sign Up ---")
+    user_facade = UserFacade()
+
+    # Register a new user
+    user_facade.register_user()
+
+    print("You are successfully registered!")
+    return "user"  # Default role for new users
+
+
+def main_menu(user_role):
     while True:
         print("\n=== Main Menu ===")
-        print("1. Manage Users 👥")
-        print("2. Manage Countries 🌍")
-        print("3. Manage Vacations 🏖️")
-        print("4. Manage Likes ❤️")
-        print("5. Manage Roles 👔")
+        if user_role == "admin":
+            print("1. Manage Users 👥")
+            print("2. Manage Countries 🌍")
+            print("3. Manage Vacations 🏖️")
+            print("4. Manage Likes ❤️")
+            print("5. Manage Roles 👔")
+        else:
+            print("1. View Vacations 🏖️")
+            print("2. Like Vacations ❤️")
+            print("3. View Countries 🌍")
         print("0. Exit 🚪")
 
-        choice = input("\nChoose an option: ")
-
-        if choice == "1":
-            manage_users()
-        elif choice == "2":
-            manage_countries()
-        elif choice == "3":
-            manage_vacations()
-        elif choice == "4":
-            manage_likes()
-        elif choice == "5":
-            manage_roles()
-        elif choice == "0":
-            print("\nThank you for using Vacation Management System! Goodbye! 👋")
-            break
-        else:
-            print("\nInvalid choice. Please try again! 🚫")
-
-
-def manage_users():
-    user_facade = UserFacade()
-    while True:
-        print("\n--- Manage Users ---")
-        print("1. View All Users 👀")
-        print("2. Register New User ✍️")
-        print("3. Delete User ❌")
-        print("0. Back to Main Menu 🔙")
-
         choice = input("Choose an option: ")
 
-        if choice == "1":
-            user_facade.display_all_users()
-        elif choice == "2":
-            user_facade.register_user()
-        elif choice == "3":
-            user_facade.delete_user()
-        elif choice == "0":
-            break
+        if user_role == "admin":
+            if choice == "1":
+                manage_users()
+            elif choice == "2":
+                manage_countries()
+            elif choice == "3":
+                manage_vacations()
+            elif choice == "4":
+                manage_likes()
+            elif choice == "5":
+                manage_roles()
+            elif choice == "0":
+                break
+            else:
+                print("\nInvalid choice. Please try again!")
         else:
-            print("Invalid choice. Please try again.")
+            if choice == "1":
+                manage_vacations()
+            elif choice == "2":
+                manage_likes()
+            elif choice == "3":
+                manage_countries()
+            elif choice == "0":
+                break
+            else:
+                print("\nInvalid choice. Please try again!")
 
 
-def manage_countries():
-    country_facade = CountryFacade()
-    while True:
-        print("\n--- Manage Countries ---")
-        print("1. View All Countries 🌍")
-        print("2. Add New Country ➕")
-        print("0. Back to Main Menu 🔙")
-
-        choice = input("Choose an option: ")
-
-        if choice == "1":
-            country_facade.display_all_countries()
-        elif choice == "2":
-            country_facade.add_country()
-        elif choice == "0":
-            break
-        else:
-            print("Invalid choice. Please try again.")
-
-
-def manage_vacations():
-    vacation_facade = VacationFacade()
-    while True:
-        print("\n--- Manage Vacations ---")
-        print("1. View All Vacations 🏖️")
-        print("2. Add New Vacation ➕")
-        print("0. Back to Main Menu 🔙")
-
-        choice = input("Choose an option: ")
-
-        if choice == "1":
-            vacation_facade.display_all_vacations()
-        elif choice == "2":
-            vacation_facade.add_vacation()
-        elif choice == "0":
-            break
-        else:
-            print("Invalid choice. Please try again.")
-
-
-def manage_likes():
-    likes_facade = LikesFacade()
-    while True:
-        print("\n--- Manage Likes ---")
-        print("1. View All Likes ❤️")
-        print("2. Add Like ➕")
-        print("3. Remove Like ❌")
-        print("0. Back to Main Menu 🔙")
-
-        choice = input("Choose an option: ")
-
-        if choice == "1":
-            likes_facade.display_all_likes()
-        elif choice == "2":
-            likes_facade.add_like()
-        elif choice == "3":
-            likes_facade.remove_like()
-        elif choice == "0":
-            break
-        else:
-            print("Invalid choice. Please try again.")
-
-
-def manage_roles():
-    roles_facade = RolesFacade()
-    while True:
-        print("\n--- Manage Roles ---")
-        print("1. View All Roles 👔")
-        print("2. Add New Role ➕")
-        print("0. Back to Main Menu 🔙")
-
-        choice = input("Choose an option: ")
-
-        if choice == "1":
-            roles_facade.display_all_roles()
-        elif choice == "2":
-            roles_facade.add_role()
-        elif choice == "0":
-            break
-        else:
-            print("Invalid choice. Please try again.")
+def main():
+    show_welcome_screen()
+    user_role = login_or_signup()
+    if user_role:  # Proceed only if user_role is valid (not None)
+        main_menu(user_role)
 
 
 if __name__ == "__main__":

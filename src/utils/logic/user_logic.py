@@ -13,12 +13,16 @@ class UserLogic:
         query = "SELECT * FROM users WHERE idusers = %s"
         return self.dal.get_one(query, (user_id,))
 
-    def add_user(self, first_name, last_name, email, password, d_o_b, role_id):
+    def get_user_by_username(self, username):
+        query = "SELECT * FROM users WHERE username = %s"
+        return self.dal.get_one(query, (username,))
+
+    def add_user(self, username, first_name, last_name, email, password, date_of_birth, role_id):
         query = """
-        INSERT INTO users (first_name, last_name, email, password, d_o_b, roles_idroles)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        INSERT INTO users (username, first_name, last_name, email, password, date_of_birth, role_id)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
-        params = (first_name, last_name, email, password, d_o_b, role_id)
+        params = (username, first_name, last_name, email, password, date_of_birth, role_id)
         return self.dal.insert(query, params)
 
     def delete_user(self, user_id):

@@ -20,10 +20,10 @@ class DAL:
 
                 user="root",  #  MySQL הוא המשתמש בעל ההרשאות הגבוהות ביותר במערכת :
 
-                password="123456",  # סיסמת ההתחברות
+                password="roei2303",  # סיסמת ההתחברות
                 # בסביבת ייצור מומלץ לשמור בקובץ הגדרות נפרד או משתנה סביבה
 
-                database="project2",  # שם מסד הנתונים
+                database="vacations",  # שם מסד הנתונים
                 # יש ליצור את מסד הנתונים מראש עם:
                 # CREATE DATABASE project2;
 
@@ -129,16 +129,12 @@ class DAL:
 # דוגמת שימוש
 if __name__ == '__main__':
     with DAL() as dal:
-        # דוגמאות ל-get_table
-        print("\n=== get_table examples ===")
-        countries = dal.get_table("SELECT * FROM countries")
-        users = dal.get_table("SELECT * FROM users WHERE age > %s", (25,))
+        dal.insert(
+            "INSERT INTO users (username,first_name, last_name, email, password, date_of_birth, role_id) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            ('beydonce','Roei', 'Koriat', 'koriat2069@gmail.com', '123456', '2005-07-25', 1)
+        )
+        print("User inserted successfully!")
 
-        for country in countries:
-            print(f"country name: {country["name"]}, Population: {
-                  country["population"]}")
-        for user in users:
-            print(f"User name:{user['name']}, Age:{user["age"]}")
 
         # # דוגמאות ל-get_scalar
         # print("\n=== get_scalar examples ===")
