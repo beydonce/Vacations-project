@@ -130,13 +130,8 @@ class DAL:
 if __name__ == '__main__':
     with DAL() as dal:
         dal.insert(
-<<<<<<< HEAD
             "INSERT INTO users (first_name, last_name, email, password, date_of_birth, role_id) VALUES (%s, %s, %s, %s, %s, %s)",
             ('Roei', 'Koriat', 'koriat2069@gmail.com', '123456', '2005-07-25', 1)
-=======
-            "INSERT INTO users (username,first_name, last_name, email, password, date_of_birth, role_id) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            ('beydonce','Roei', 'Koriat', 'koriat2069@gmail.com', '123456', '2005-07-25', 1)
->>>>>>> d81b1a82505bc01d37a0de0e7de0a6779a52c964
         )
         print("User inserted successfully!")
 

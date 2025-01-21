@@ -1,6 +1,5 @@
 import sys
 import os
-from dal import DAL
 
 # Add project path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
@@ -137,9 +136,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-<<<<<<< HEAD
-"added change"
-
-"new change"
-=======
->>>>>>> d81b1a82505bc01d37a0de0e7de0a6779a52c964
