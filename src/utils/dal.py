@@ -7,7 +7,8 @@ class DAL:
     מספקת ממשק מאובטח ומאורגן לביצוע פעולות מול בסיס הנתונים
     """
 
-    def __init__(self):
+    def __init__(self, debug=False):
+        self.debug = debug
         """
         יצירת התחברות לבסיס הנתונים
         במקרה של שגיאה, מדפיסה הודעת שגיאה ומאפסת את החיבור
@@ -44,33 +45,39 @@ class DAL:
         if params is not None and not isinstance(params, tuple):
             raise ValueError("Params must be a tuple or None.")
 
-    def _execute_query(self, query, params=None, fetchall=False, fetchone=False):
+    def _execute_query(self, query, params=None, fetchall=False, fetchone=False, debug=False):
         """
         הרצת שאילתה עם אפשרויות שונות לקבלת התוצאות
         fetchall - מחזיר את כל התוצאות
         fetchone - מחזיר שורה אחת בלבד
+        debug - אם True, מדפיס מידע עבור השאילתה
         """
         self._validate_query_params(query, params)
         if self.connection:
             try:
                 with self.connection.cursor(dictionary=True) as cursor:
-                    print(f"Executing query: {query}")
-                    if params:
-                        print(f"With parameters: {params}")
+                    if debug:
+                        print(f"Executing query: {query}")
+                        if params:
+                            print(f"With parameters: {params}")
                     cursor.execute(query, params)
                     if fetchall:
                         result = cursor.fetchall()
-                        print(f"Fetched {len(result)} rows")
+                        if debug:
+                            print(f"Fetched {len(result)} rows")
                         return result
                     elif fetchone:
                         result = cursor.fetchone()
-                        print("Fetched one row")
+                        if debug:
+                            print("Fetched one row")
                         return result
                     else:
-                        print(f"Query affected {cursor.rowcount} rows")
-                    return cursor
+                        if debug:
+                            print(f"Query affected {cursor.rowcount} rows")
+                        return cursor
             except mysql.connector.Error as err:
-                print(f"Error executing query: {err}")
+                if debug:
+                    print(f"Error executing query: {err}")
         return None
 
     def get_table(self, query, params=None):
@@ -129,11 +136,25 @@ class DAL:
 # דוגמת שימוש
 if __name__ == '__main__':
     with DAL() as dal:
+        # dal.insert(
+        #     "INSERT INTO users (first_name, last_name, email, password, date_of_birth, role_id) VALUES (%s, %s, %s, %s, %s, %s)",
+        #     ('Roei', 'Koriat', 'koriat2069@gmail.com', '123456', '2005-07-25', 1)
+        # )
+        # print("User inserted successfully!")
+
         dal.insert(
-            "INSERT INTO users (first_name, last_name, email, password, date_of_birth, role_id) VALUES (%s, %s, %s, %s, %s, %s)",
-            ('Roei', 'Koriat', 'koriat2069@gmail.com', '123456', '2005-07-25', 1)
+            "INSERT INTO vacations (title, description, start_date, end_date, price, countries_id, image_url) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (
+                'Summer in Paris',  # title
+                'A wonderful vacation in Paris with a lot of sightseeing.',  # description
+                '2025-06-01',  # start_date
+                '2025-06-15',  # end_date
+                2500.00,  # price
+                1,  # countries_id (Assuming the country id 1 exists in your countries table)
+                'https://example.com/images/paris.jpg'  # image_url
+            )
         )
-        print("User inserted successfully!")
 
 
         # # דוגמאות ל-get_scalar

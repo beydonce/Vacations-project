@@ -10,6 +10,7 @@ from facade.vacations_facade import VacationFacade
 from facade.likes_facade import LikesFacade
 from facade.roles_facade import RolesFacade
 
+vacation_facade = VacationFacade()
 
 def show_welcome_screen():
     print("\n" + "=" * 60)
@@ -105,7 +106,7 @@ def main_menu(user_role):
             elif choice == "2":
                 manage_countries()
             elif choice == "3":
-                manage_vacations()
+                vacation_facade.display_all_vacations()
             elif choice == "4":
                 manage_likes()
             elif choice == "5":
@@ -116,7 +117,7 @@ def main_menu(user_role):
                 print("\nInvalid choice. Please try again!")
         else:
             if choice == "1":
-                manage_vacations()
+                vacation_facade.display_all_vacations()
             elif choice == "2":
                 manage_likes()
             elif choice == "3":
