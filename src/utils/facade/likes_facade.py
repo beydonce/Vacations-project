@@ -34,4 +34,8 @@ class LikesFacade:
         vacation_id = int(input("Enter Vacation ID: "))
 
         result = self.logic.remove_like(user_id, vacation_id)
+<<<<<<< HEAD
         print(result["message"])
+=======
+        print(result["message"])
+>>>>>>> d81b1a82505bc01d37a0de0e7de0a6779a52c964
