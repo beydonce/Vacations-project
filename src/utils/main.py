@@ -97,7 +97,6 @@ def main_menu(user_role, user_id):
             print("2. Manage Countries 🌍")
             print("3. Manage Vacations 🏖️")
             print("4. Manage Likes ❤️")
-            print("5. Manage Roles 👔")
         else:
             print("1. View Vacations 🏖️")
             print("2. Like Vacations ❤️")

@@ -92,7 +92,7 @@ class DAL:
         """הוספת נתונים לטבלה"""
         return self._execute_query(query, params)
 
-    def update(self, query, params=None):
+    def update(self, query, params):
         """עדכון נתונים בטבלה"""
         return self._execute_query(query, params)
 

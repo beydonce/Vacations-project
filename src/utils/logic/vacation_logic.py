@@ -50,7 +50,7 @@ class VacationLogic:
                 updates.append("price = %s")
                 params.append(price)
             if country_id:
-                updates.append("countries_idcountries = %s")
+                updates.append("countries_id = %s")  # Corrected here
                 params.append(country_id)
             if image_url:
                 updates.append("image_url = %s")
@@ -66,6 +66,7 @@ class VacationLogic:
             print("Vacation updated successfully!")
         except Exception as e:
             print(f"Error updating vacation: {e}")
+
 
     def delete_vacation(self, vacation_id):
         try:
