@@ -88,7 +88,7 @@ class DAL:
         """שליפת ערך בודד (שורה אחת)"""
         return self._execute_query(query, params, fetchone=True)
 
-    def insert(self, query, params=None):
+    def insert(self, query, params):
         """הוספת נתונים לטבלה"""
         return self._execute_query(query, params)
 

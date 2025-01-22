@@ -16,15 +16,15 @@ class VacationLogic:
         """
         return self.dal.get_table(query, (limit, offset))
 
-    def add_vacation(self, title, description, start_date, end_date, price, country_id, image_url=None):
+    def add_vacation(self, title, description, start_date, end_date, price, countries_id, image_url=None):
         try:
             if not image_url:
                 image_url = "https://example.com/default-image.jpg"
             query = """
-            INSERT INTO vacations (title, description, start_date, end_date, price, countries_idcountries, image_url)
+            INSERT INTO vacations (title, description, start_date, end_date, price, countries_id, image_url)
             VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
-            params = (title, description, start_date, end_date, price, country_id, image_url)
+            params = (title, description, start_date, end_date, price, countries_id, image_url)
             self.dal.insert(query, params)
             print("Vacation added successfully!")
         except Exception as e:
