@@ -1,5 +1,6 @@
-from dal import DAL
+# vacation_logic.py
 
+from dal import DAL
 
 class VacationLogic:
     def __init__(self):
@@ -73,5 +74,4 @@ class VacationLogic:
             print("Vacation deleted successfully!")
         except Exception as e:
             print(f"Error deleting vacation: {e}")
-
 

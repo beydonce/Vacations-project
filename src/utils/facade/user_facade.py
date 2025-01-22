@@ -90,7 +90,7 @@ class UserFacade:
         user = self.logic.get_user_by_username(username)  # Fetch user details
         if user and user['password'] == password:  # Compare passwords using dictionary keys
             print(f"Welcome back, {username}!")
-            return user  # Return user dictionary or relevant info
+            return user  # Return the user dictionary (including id and role)
         else:
             print("Invalid username or password.")
             return None

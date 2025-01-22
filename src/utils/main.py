@@ -1,16 +1,11 @@
-import sys
-import os
-
-# Add project path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
+# main.py
 
 from facade.user_facade import UserFacade
-from facade.countries_facade import CountryFacade
 from facade.vacations_facade import VacationFacade
 from facade.likes_facade import LikesFacade
-from facade.roles_facade import RolesFacade
 
 vacation_facade = VacationFacade()
+likes_facade = LikesFacade()
 
 def show_welcome_screen():
     print("\n" + "=" * 60)
@@ -23,7 +18,7 @@ def show_welcome_screen():
       ╚═══╝  ╚═╝  ╚═╝ ╚═════╝╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
     """)
     print("=" * 60)
-    print("""
+    print("""  
     🌴 Welcome to the Vacation Management System 🌴
 
     Let's log in or sign up to get started!
@@ -42,8 +37,9 @@ def login_or_signup():
         if choice == '1':
             username = input("Enter your username: ")
             password = input("Enter your password: ")
-            user, role = log_in(username, password)  # Pass both username and password
-            return role  # Return the user role (admin or user)
+            user, role = log_in(username, password)
+            if user:
+                return user, role  # Return both the user and role
         elif choice == '2':
             user_facade = UserFacade()
             user_facade.register_user()
@@ -56,34 +52,44 @@ def login_or_signup():
 
 def log_in(username, password):
     user_facade = UserFacade()
-    user = user_facade.login(username, password)  # Correct method call
+    user = user_facade.login(username, password)
 
     if user:
-        # Assuming the role is stored in the user object as 'role_id'
         role = user['role_id']  # Fetch role_id from the user data
-        if role == 1:  # If the user is an admin
+        if role == 1:
             return user, "admin"
-        elif role == 2:  # If the user is a regular user
+        elif role == 2:
             return user, "user"
         else:
-            return user, "user"  # Default role if role_id is unrecognized
+            return user, "user"
     else:
         print("Invalid login credentials.")
-        return None, None  # Return None for both user and role
+        return None, None
 
 
-def sign_up():
-    print("\n--- Sign Up ---")
-    user_facade = UserFacade()
+def manage_vacations():
+    while True:
+        print("\n=== Manage Vacations ===")
+        print("1. Add New Vacation 🏖️")
+        print("2. Update Vacation Details 📝")
+        print("3. Delete Vacation 🗑️")
+        print("0. Back to Main Menu 🔙")
+        
+        choice = input("Choose an option: ")
 
-    # Register a new user
-    user_facade.register_user()
+        if choice == "1":
+            vacation_facade.add_vacation()
+        elif choice == "2":
+            vacation_facade.update_vacation()
+        elif choice == "3":
+            vacation_facade.delete_vacation()
+        elif choice == "0":
+            break
+        else:
+            print("\nInvalid choice. Please try again!")
 
-    print("You are successfully registered!")
-    return "user"  # Default role for new users
 
-
-def main_menu(user_role):
+def main_menu(user_role, user_id):
     while True:
         print("\n=== Main Menu ===")
         if user_role == "admin":
@@ -106,9 +112,9 @@ def main_menu(user_role):
             elif choice == "2":
                 manage_countries()
             elif choice == "3":
-                vacation_facade.display_all_vacations()
+                manage_vacations()
             elif choice == "4":
-                manage_likes()
+                likes_facade.manage_likes(user_id=user_id)
             elif choice == "5":
                 manage_roles()
             elif choice == "0":
@@ -119,7 +125,7 @@ def main_menu(user_role):
             if choice == "1":
                 vacation_facade.display_all_vacations()
             elif choice == "2":
-                manage_likes()
+                likes_facade.manage_likes(user_id=user_id)  # Pass user_id to likes management
             elif choice == "3":
                 manage_countries()
             elif choice == "0":
@@ -130,9 +136,9 @@ def main_menu(user_role):
 
 def main():
     show_welcome_screen()
-    user_role = login_or_signup()
-    if user_role:  # Proceed only if user_role is valid (not None)
-        main_menu(user_role)
+    user, user_role = login_or_signup()
+    if user and user_role:  # Proceed only if user and user_role are valid
+        main_menu(user_role, user['id'])  # Pass user_id to main_menu
 
 
 if __name__ == "__main__":
