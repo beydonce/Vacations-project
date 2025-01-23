@@ -25,5 +25,5 @@ class UserLogic:
         return self.dal.insert(query, params)
 
     def delete_user(self, user_id):
-        query = "DELETE FROM users WHERE idusers = %s"
+        query = "DELETE FROM users WHERE id = %s"
         return self.dal.delete(query, (user_id,))

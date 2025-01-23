@@ -41,7 +41,7 @@ def login_or_signup():
             password = input("Enter your password: ")
             user, role = log_in(username, password)
             if user:
-                return user, role  # Return both the user and role
+                return user, role  
         elif choice == '2':
             user_facade = UserFacade()
             user_facade.register_user()
@@ -57,7 +57,7 @@ def log_in(username, password):
     user = user_facade.login(username, password)
 
     if user:
-        role = user['role_id']  # Fetch role_id from the user data
+        role = user['role_id'] 
         if role == 1:
             return user, "admin"
         elif role == 2:
@@ -112,6 +112,26 @@ def manage_vacations():
         else:
             print("\nInvalid choice. Please try again!")
 
+def manage_users():
+    while True:
+        print("\n=== Manage Users ===")
+        print("1. Show All Users 👥")
+        print("2. Delete User 🗑️")
+        print("0. Back to Main Menu 🔙")
+
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            user_facade = UserFacade()  
+            user_facade.display_all_users()
+        elif choice == "2":
+            user_facade = UserFacade() 
+            user_facade.delete_user()
+        elif choice == "0":
+            break
+        else:
+            print("\nInvalid choice. Please try again!")
+
 
 def main_menu(user_role, user_id):
     while True:
@@ -155,8 +175,8 @@ def main_menu(user_role, user_id):
 def main():
     show_welcome_screen()
     user, user_role = login_or_signup()
-    if user and user_role:  # Proceed only if user and user_role are valid
-        main_menu(user_role, user['id'])  # Pass user_id to main_menu
+    if user and user_role:  
+        main_menu(user_role, user['id']) 
 
 
 if __name__ == "__main__":

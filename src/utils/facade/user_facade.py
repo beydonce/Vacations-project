@@ -8,8 +8,20 @@ class UserFacade:
 
     def display_all_users(self):
         users = self.logic.get_all_users()
-        for user in users:
-            print(user)
+        if users:
+            print("\n" + "=" * 50)
+            print(f"{'ID':<5} {'Username':<15} {'First Name':<15} {'Last Name':<15} {'Role':<10}")
+            print("-" * 50)
+            for user in users:
+                role = "Admin" if user['role_id'] == 1 else "User"
+                print(f"{user['id']:<5} {user['username']:<15} {user['first_name']:<15} {user['last_name']:<15} {role:<10}")
+            print("=" * 50)
+        else:
+            print("\nNo users found.")
+
+        # Pause to let the admin view the list
+        input("\nPress Enter to return to the menu...")
+
 
     def register_user(self):
         # Username validation
