@@ -50,3 +50,14 @@ class LikesLogic:
         except Exception as e:
             print(f"Error while deleting like: {e}")
             return False
+
+    def check_like_exists(self, user_id, vacation_id):
+        """
+        בדיקה אם לייק קיים עבור משתמש וחופשה
+        """
+        query = """
+        SELECT * FROM likes
+        WHERE vacations_idvacations = %s AND users_idusers = %s
+        """
+        existing_like = self.dal.get_one(query, (vacation_id, user_id))
+        return existing_like is not None

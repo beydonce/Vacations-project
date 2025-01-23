@@ -3,9 +3,11 @@
 from facade.user_facade import UserFacade
 from facade.vacations_facade import VacationFacade
 from facade.likes_facade import LikesFacade
+from facade.countries_facade import CountryFacade
 
 vacation_facade = VacationFacade()
 likes_facade = LikesFacade()
+countries_facade = CountryFacade()
 
 def show_welcome_screen():
     print("\n" + "=" * 60)
@@ -66,6 +68,24 @@ def log_in(username, password):
         print("Invalid login credentials.")
         return None, None
 
+def manage_countries():
+    while True:
+        print("\n=== Manage Countries ===")
+        print("1. View Countries 🌍")
+        print("2. Add Country ➕")
+        print("0. Back to Main Menu 🔙")
+
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            countries_facade.display_all_countries()
+        elif choice == "2":
+            countries_facade.add_country()
+        elif choice == "0":
+            break
+        else:
+            print("\nInvalid choice. Please try again!")
+
 
 def manage_vacations():
     while True:
@@ -73,6 +93,8 @@ def manage_vacations():
         print("1. Add New Vacation 🏖️")
         print("2. Update Vacation Details 📝")
         print("3. Delete Vacation 🗑️")
+        print("4. View Vacations 🏖️")
+
         print("0. Back to Main Menu 🔙")
         
         choice = input("Choose an option: ")
@@ -83,6 +105,8 @@ def manage_vacations():
             vacation_facade.update_vacation()
         elif choice == "3":
             vacation_facade.delete_vacation()
+        elif choice == "4":
+            vacation_facade.display_all_vacations()
         elif choice == "0":
             break
         else:
@@ -96,7 +120,6 @@ def main_menu(user_role, user_id):
             print("1. Manage Users 👥")
             print("2. Manage Countries 🌍")
             print("3. Manage Vacations 🏖️")
-            print("4. Manage Likes ❤️")
         else:
             print("1. View Vacations 🏖️")
             print("2. Like Vacations ❤️")
@@ -112,10 +135,6 @@ def main_menu(user_role, user_id):
                 manage_countries()
             elif choice == "3":
                 manage_vacations()
-            elif choice == "4":
-                likes_facade.manage_likes(user_id=user_id)
-            elif choice == "5":
-                manage_roles()
             elif choice == "0":
                 break
             else:
@@ -124,9 +143,9 @@ def main_menu(user_role, user_id):
             if choice == "1":
                 vacation_facade.display_all_vacations()
             elif choice == "2":
-                likes_facade.manage_likes(user_id=user_id)  # Pass user_id to likes management
+                likes_facade.manage_likes(user_id=user_id)
             elif choice == "3":
-                manage_countries()
+                countries_facade.display_all_countries()
             elif choice == "0":
                 break
             else:

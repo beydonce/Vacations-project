@@ -1,5 +1,3 @@
-# vacation_facade.py
-
 from logic.vacation_logic import VacationLogic
 
 class VacationFacade:
@@ -58,25 +56,3 @@ class VacationFacade:
         print("\n--- Delete Vacation ---")
         vacation_id = int(input("Enter vacation ID to delete: "))
         self.logic.delete_vacation(vacation_id)
-
-    def manage_vacations():
-        while True:
-            print("\n=== Manage Vacations ===")
-            print("1. Add New Vacation 🏖️")
-            print("2. Update Vacation Details 📝")
-            print("3. Delete Vacation 🗑️")
-            print("0. Back to Main Menu 🔙")
-            
-            choice = input("Choose an option: ")
-
-            if choice == "1":
-                add_vacation()
-            elif choice == "2":
-                update_vacation()
-            elif choice == "3":
-                delete_vacation()
-            elif choice == "0":
-                break
-            else:
-                print("\nInvalid choice. Please try again!")
-

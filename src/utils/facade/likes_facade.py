@@ -17,9 +17,15 @@ class LikesFacade:
             print("No likes found.")
 
     def add_like(self, user_id, vacation_id):
-        print(f"Attempting to add like for user_id={user_id}, vacation_id={vacation_id}")
+        """
+        Add a like for a user and vacation.
+        """
         result = self.logic.add_like(user_id, vacation_id)
-        print(f"Add like result: {result}")  # This will show you the result of the add_like method
+        if result['success']:
+            print("Like added successfully!")
+        else:
+            print(result['message'])  # Provide feedback if the like already exists
+    
 
     def remove_like(self, user_id, vacation_id):
         if self.logic.remove_like(user_id, vacation_id):
