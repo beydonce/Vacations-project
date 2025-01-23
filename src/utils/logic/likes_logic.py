@@ -61,3 +61,12 @@ class LikesLogic:
         """
         existing_like = self.dal.get_one(query, (vacation_id, user_id))
         return existing_like is not None
+
+    def get_liked_vacations_by_user(self, user_id):
+        query = """
+        SELECT v.idvacations, v.title, v.description, v.price
+        FROM likes l
+        JOIN vacations v ON l.vacation_id = v.idvacations
+        WHERE l.user_id = %s
+        """
+        return self.dal.get_table(query, (user_id,))

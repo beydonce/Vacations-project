@@ -1,5 +1,5 @@
 # main.py
-
+import time
 from facade.user_facade import UserFacade
 from facade.vacations_facade import VacationFacade
 from facade.likes_facade import LikesFacade
@@ -133,10 +133,10 @@ def manage_users():
             print("\nInvalid choice. Please try again!")
 
 
-def main_menu(user_role, user_id):
+def main_menu(user, role):
     while True:
         print("\n=== Main Menu ===")
-        if user_role == "admin":
+        if role == "admin":
             print("1. Manage Users 👥")
             print("2. Manage Countries 🌍")
             print("3. Manage Vacations 🏖️")
@@ -144,11 +144,12 @@ def main_menu(user_role, user_id):
             print("1. View Vacations 🏖️")
             print("2. Like Vacations ❤️")
             print("3. View Countries 🌍")
-        print("0. Exit 🚪")
+
+        print("0. Log Out 🔒")
 
         choice = input("Choose an option: ")
 
-        if user_role == "admin":
+        if role == "admin":
             if choice == "1":
                 manage_users()
             elif choice == "2":
@@ -156,27 +157,35 @@ def main_menu(user_role, user_id):
             elif choice == "3":
                 manage_vacations()
             elif choice == "0":
-                break
+                print("\nLogging out...")
+                time.sleep(2)
+                return 
             else:
-                print("\nInvalid choice. Please try again!")
+                print("Invalid choice. Please try again!")
         else:
             if choice == "1":
                 vacation_facade.display_all_vacations()
             elif choice == "2":
-                likes_facade.manage_likes(user_id=user_id)
+                likes_facade.manage_likes(user_id=user['id'])
             elif choice == "3":
                 countries_facade.display_all_countries()
             elif choice == "0":
-                break
+                print("\nLogging out...")
+                time.sleep(2)
+                return  
             else:
-                print("\nInvalid choice. Please try again!")
+                print("Invalid choice. Please try again!")
+
+
 
 
 def main():
     show_welcome_screen()
-    user, user_role = login_or_signup()
-    if user and user_role:  
-        main_menu(user_role, user['id']) 
+    while True:
+        user, user_role = login_or_signup()
+        if user and user_role:  
+            main_menu(user_role, user['id']) 
+    
 
 
 if __name__ == "__main__":
