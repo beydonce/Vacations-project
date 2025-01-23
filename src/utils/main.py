@@ -30,12 +30,12 @@ def show_welcome_screen():
 
 def login_or_signup():
     while True:
-        print("=== Authentication ===")
+        print("\n=== Authentication ===")
         print("1. Log In")
         print("2. Sign Up")
         print("0. Exit")
         choice = input("Choose an option: ")
-
+        print("\n")
         if choice == '1':
             username = input("Enter your username: ")
             password = input("Enter your password: ")
@@ -177,14 +177,12 @@ def main_menu(user, role):
                 print("Invalid choice. Please try again!")
 
 
-
-
 def main():
     show_welcome_screen()
     while True:
         user, user_role = login_or_signup()
         if user and user_role:  
-            main_menu(user_role, user['id']) 
+            main_menu(user, user_role) 
     
 
 

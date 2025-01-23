@@ -79,6 +79,12 @@ class VacationLogic:
             print("Vacation deleted successfully!")
         except Exception as e:
             print(f"Error deleting vacation: {e}")
+    
+    def get_vacation_by_id(self, vacation_id):
+        """Retrieve a vacation by its ID."""
+        query = "SELECT * FROM vacations WHERE idvacations = %s"
+        result = self.dal.get_one(query, (vacation_id,))
+        return result
 
 
 

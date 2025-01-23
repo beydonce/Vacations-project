@@ -25,3 +25,9 @@ class CountryLogic:
             return {"success": True, "message": "Country added successfully!"}
         except Exception as e:
             return {"success": False, "message": str(e)}
+    
+    def check_country_exists(self, country_id):
+        """Check if a country with the given ID exists."""
+        check_query = "SELECT * FROM countries WHERE id = %s"
+        result = self.dal.get_one(check_query, (country_id,))
+        return result is not None
