@@ -27,10 +27,13 @@ class UserFacade:
         # Username validation
         while True:
             username = input("Enter username: ")
-            if username.isalnum():
-                break
-            else:
+            if not username.isalnum():
                 print("Invalid username. Please use only letters and numbers.")
+                continue
+            if self.logic.get_user_by_username(username):
+                print("Username already taken. Please choose another.")
+                continue
+            break
 
         # First name validation
         while True:
@@ -72,20 +75,13 @@ class UserFacade:
             else:
                 print("Invalid date format. Please use YYYY-MM-DD.")
 
-        # Role ID validation
-        while True:
-            try:
-                role_id = int(input("Enter role ID (1 for admin, 2 for user): "))
-                if role_id in [1, 2]:
-                    break
-                else:
-                    print("Invalid role ID. Choose 1 for admin or 2 for user.")
-            except ValueError:
-                print("Role ID must be an integer.")
+        # Set role_id to 2 (User) by default
+        role_id = 2  
 
         # Add user after all validations pass
         self.logic.add_user(username, first_name, last_name, email, password, date_of_birth, role_id)
         print("User registered successfully!")
+
 
     def delete_user(self):
         try:
